@@ -7,20 +7,36 @@ from langchain_openai import ChatOpenAI
 load_dotenv()
 
 # Create a ChatOpenAI model
-model = ChatOpenAI(model="gpt-4")
+model = ChatOpenAI(model="gpt-4") # already a Runnable
 
 # Define prompt templates
-prompt_template = ChatPromptTemplate.from_messages(
+prompt_template = ChatPromptTemplate.from_messages( # already a Runnable
     [
         ("system", "You are a comedian who tells jokes about {topic}."),
         ("human", "Tell me {joke_count} jokes."),
     ]
 )
 
+# Note: This is just to show how to build the chain under the hood
+# In practice, we would use the higher-level abstractions provided by LangChain.
+# ChatPromptTemplate and ChatOpenAI are already Runnable, and we don't need to wrap them in RunnableLambda.
+# So this format_prompt = RunnableLambda(lambda x: prompt_template.format_prompt(**x))
+# could be replaced with just: format_prompt = prompt_template
+# and this step: model.invoke(x.to_messages())
+# is equivalent to: model.invoke(x)
+# That means your whole chain can become:
+# chain = RunnableSequence(
+#     first=prompt_template,  # no need for format_prompt(**x)
+#     middle=[model],         # no need for .to_messages()
+#     last=RunnableLambda(lambda x: x.content)
+# )
+
+
 # Create individual runnables (steps in the chain)
 format_prompt = RunnableLambda(lambda x: prompt_template.format_prompt(**x))
 invoke_model = RunnableLambda(lambda x: model.invoke(x.to_messages())) # type: ignore
 parse_output = RunnableLambda(lambda x: x.content) # type: ignore
+
 
 # Create the RunnableSequence (equivalent to the LCEL chain)
 chain = RunnableSequence(first=format_prompt, middle=[invoke_model], last=parse_output)
@@ -51,7 +67,6 @@ print(response)
 #     SystemMessage(content="You are a comedian who tells jokes about doctors."),
 #     HumanMessage(content="Tell me 2 jokes.")
 # ])
-
 
 # Note on RunnableLambda(lambda x: model.invoke(x.to_messages()))
 # Here x is the ChatPromptValue object returned by the previous step.
