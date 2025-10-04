@@ -1,7 +1,7 @@
 import os
 
 from langchain.text_splitter import CharacterTextSplitter   # For splitting text into chunks 
-from langchain_community.document_loaders import TextLoader # For loading text documents
+from langchain_community.document_loaders import TextLoader # For loading text documents, there is also a PDFLoader, Web loaders, etc.
 from langchain_community.vectorstores import Chroma         # For creating and managing a Chroma vector store
 from langchain_openai import OpenAIEmbeddings               # For generating embeddings using OpenAI models
 from dotenv import load_dotenv
@@ -42,15 +42,17 @@ if not os.path.exists(persistent_directory):
         )
 
     # Read the text content from the file
+    print("\n--- Loading document ---")
     loader = TextLoader(file_path, encoding="utf-8")
     documents = loader.load() # documents is a list of Document objects in LangChain
     # encoding="utf-8" is important
     # Specify encoding to handle special characters 
     # TextLoader tries to open with system encoding → fails on Windows which defaults to cp1252 encoding
 
-    # Split the document into chunks
-    text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
-    docs = text_splitter.split_documents(documents)
+    # Split the document into chunks, there are other text splitter strategies available
+    print("\n--- Splitting documents into chunks ---")
+    text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0) 
+    docs = text_splitter.split_documents(documents) # docs is a list of Document objects (chunks) in LangChain
 
     # Display information about the split documents
     print("\n--- Document Chunks Information ---")
