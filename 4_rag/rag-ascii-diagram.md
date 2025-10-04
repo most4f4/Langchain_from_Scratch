@@ -38,7 +38,13 @@
                                   └─────────────────┘
 ```
 
-**Embedding = numerical representation of text**
+Embedding = numerical representation of text
+Chunk = smaller piece of the document
+Vector Store = database optimized for storing and querying embeddings
+LLM Embedder = Large Language Model that converts text to embeddings
+retrieval-augmented generation (RAG) = technique that combines retrieval of relevant documents with generation of answers using a language model
+LLM has a context window limit (e.g., 4K tokens for GPT-3.5-turbo, 32K tokens for GPT-4-32k). RAG helps overcome this limitation by retrieving only the most relevant chunks of information from a large document, allowing the LLM to generate accurate and contextually relevant answers without exceeding its token limit.
+To do that we need to break down the document into smaller chunks, embed each chunk into a vector representation, and store these embeddings in a vector database. When a user asks a question, we embed the question and retrieve the most relevant chunks from the vector database based on similarity to the question embedding. These chunks are then provided as context to the LLM to generate an answer.
 
 ### Example Chunk
 
