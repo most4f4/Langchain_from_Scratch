@@ -43,3 +43,32 @@ for i, doc in enumerate(relevant_docs, 1):
     print(f"Document {i}:\n{doc.page_content}\n")
     if doc.metadata:
         print(f"Source: {doc.metadata.get('source', 'Unknown')}\n")
+
+
+
+# -------------------------------------------------------------------------------
+# Note:
+# TextLoader automatically adds metadata with the source file path.
+# When we used this line:
+
+# loader = TextLoader(file_path, encoding="utf-8")
+# documents = loader.load()
+# it created Document objects with metadata that includes the source file path.
+# Document(
+#     page_content="...text content...",
+#     metadata={"source": file_path}
+# )
+# That’s why every document chunk automatically includes:
+# doc.metadata["source"] == "path/to/your/odyssey.txt"
+
+# If you want to add custom metadata later (for example, {"chapter": "Book I", "author": "Homer"}),
+# you can do it before creating embeddings:
+# for doc in documents:
+#     doc.metadata["author"] = "Homer"
+# You will see the process in the next files (2a_rag_basics_metadata.py).
+# -------------------------------------------------------------------------------
+
+
+
+
+
