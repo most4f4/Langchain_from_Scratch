@@ -57,7 +57,7 @@ agent = create_react_agent(
 agent_executor = AgentExecutor.from_agent_and_tools(
     agent=agent, # type: ignore
     tools=tools,
-    verbose=True,
+    verbose=True, # Verbose mode to print out the agent's thought process
 )
 
 # Run the agent with a test query
