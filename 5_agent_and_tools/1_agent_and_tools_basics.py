@@ -61,6 +61,7 @@ agent_executor = AgentExecutor.from_agent_and_tools(
 )
 
 # Run the agent with a test query
+# Note: for agents we need to use the "input" key in the dictionary we pass to invoke()
 response = agent_executor.invoke({"input": "What time is it?"})
 
 # Print the response from the agent
