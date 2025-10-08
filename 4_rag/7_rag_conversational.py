@@ -90,7 +90,11 @@ qa_prompt = ChatPromptTemplate.from_messages(
 )
 
 # Create a chain to combine documents for question answering
-# `create_stuff_documents_chain` feeds all retrieved context into the LLM
+# “Stuffing” = simply feeding all retrieved documents into the prompt context for answering.
+# This function creates a chain that:
+# 1- Takes llm (the model you’re using to generate answers),
+# 2- Takes qa_prompt (the instructions for how to ask the LLM),
+# 3- And tells the LLM: “Here’s your question and all the context — answer using that.”
 question_answer_chain = create_stuff_documents_chain(llm, qa_prompt)
 
 # Create a retrieval chain that combines the history-aware retriever and the question answering chain
