@@ -16,32 +16,40 @@ This repository contains practical implementations and examples for learning Lan
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone <your-repo-url>
 cd LANGCHAIN_FROM_SCRATCH
 ```
 
 2. Install dependencies using Poetry:
+
 ```bash
 poetry install
 ```
 
 3. Set up environment variables:
+
 ```bash
 cp .env.example .env
 ```
 
 4. Add your API keys to `.env`:
+
 ```
 OPENAI_API_KEY=your_openai_key
-ANTHROPIC_API_KEY=your_anthropic_key
-GOOGLE_API_KEY=your_google_key
+ANTHROPIC_API_KEY=your_anthropic_key    <---- optional
+GOOGLE_API_KEY=your_google_key          <---- optional
+FIRECRAWL_API_KEY=your_firecrawl_key
+TAVILY_API_KEY=your_tavily_key
 ```
 
 ## 📚 Repository Structure
 
 ### 1. Chat Models (`1_chat_models/`)
+
 Introduction to different chat model implementations:
+
 - `1_chat_model_basic.py` - Basic chat model usage
 - `2_chat_model_basic_conversation.py` - Simple conversations
 - `3_chat_model_alternatives.py` - Alternative model providers
@@ -49,12 +57,16 @@ Introduction to different chat model implementations:
 - `5_chat_model_save_message_history_firebase.py` - Persistent chat history
 
 ### 2. Prompt Templates (`2_prompt_templates/`)
+
 Learn to structure and manage prompts effectively:
+
 - `1_prompt_template_basic.py` - Basic prompt templates
 - `2_prompt_template_with_chat_model.py` - Integration with chat models
 
 ### 3. Chains (`3_chains/`)
+
 Build complex workflows by chaining components:
+
 - `1_chains_basics.py` - Introduction to chains
 - `2_chains_under_the_hood.py` - Understanding chain mechanics
 - `3_chains_extended.py` - Advanced chain patterns
@@ -63,12 +75,15 @@ Build complex workflows by chaining components:
 - `6_chains_branching.py` - Conditional branching logic
 
 ### 4. RAG (Retrieval-Augmented Generation) (`4_rag/`)
+
 Implement document retrieval and question-answering systems:
 
 #### Books Subdirectory
+
 Sample documents for RAG examples
 
 #### RAG Components
+
 - `1a_rag_basics.py` - RAG fundamentals
 - `1b_rag_basics.py` - Additional RAG patterns
 - `2a_rag_basics_metadata.py` - Metadata handling
@@ -83,7 +98,9 @@ Sample documents for RAG examples
 - `rag-ascii-diagram.md` - Visual architecture reference
 
 ### 5. Agents and Tools (`5_agent_and_tools/`)
+
 Create autonomous agents with tool usage:
+
 - `1_agent_and_tools_basics.py` - Agent fundamentals
 - `agent_deep_dive/` - Deep dive into agent architectures
 - `tools_deep_dive/` - Custom tool development
@@ -104,6 +121,7 @@ Create autonomous agents with tool usage:
 ## 💡 Usage Examples
 
 ### Basic Chat Model
+
 ```python
 from langchain_openai import ChatOpenAI
 
@@ -113,12 +131,14 @@ print(response.content)
 ```
 
 ### Simple RAG System
+
 ```python
 # Load documents, create embeddings, and query
 # See 1a_rag_basics.py for complete example
 ```
 
 ### Agent with Tools
+
 ```python
 # Create an agent with custom tools
 # See 1_agent_and_tools_basics.py for complete example
