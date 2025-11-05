@@ -55,7 +55,7 @@ contextualize_q_system_prompt = (
 contextualize_q_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", contextualize_q_system_prompt),
-        MessagesPlaceholder("chat_history"),
+        MessagesPlaceholder("chat_history"), # Message history will be injected here, MessagesPlaceholder handles that
         ("human", "{input}"),
     ]
 )
