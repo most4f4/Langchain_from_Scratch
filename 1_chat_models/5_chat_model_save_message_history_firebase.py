@@ -49,7 +49,7 @@ COLLECTION_NAME = "chat_messages"  # Firestore collection name, update if needed
 
 # Initialize Firestore Client
 print("Initializing Firestore Client...")
-client = firestore.Client(project=PROJECT_ID) # Connect to the Firestore database using the project ID
+client = firestore.Client(project=PROJECT_ID) # Create Firestore client instance tied to your project ID
 
 # Initialize Firestore Chat Message History
 print("Initializing Firestore Chat Message History...")
@@ -62,7 +62,7 @@ print("Chat History Initialized.")
 print("Current Chat History:", chat_history.messages) # Print existing messages if any
 
 # Initialize Chat Model
-model = ChatOpenAI()
+model = ChatOpenAI() # defaults to GPT-4o, uses OPENAI_API_KEY from environment
 
 print("Start chatting with the AI. Type 'exit' to quit.")
 
