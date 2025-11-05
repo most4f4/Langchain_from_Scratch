@@ -63,6 +63,7 @@ contextualize_q_prompt = ChatPromptTemplate.from_messages(
 # Create a history-aware retriever by wrapping the original retriever with the contextualization ability
 # This uses the LLM to help reformulate the question based on chat history
 # So before doing retrieval, it first asks the LLM: “Rephrase the user’s question using chat history.”
+# IMPORTANT: it returns the retrieved documents as "contexts" (technically, a list of Document objects).
 history_aware_retriever = create_history_aware_retriever(
     llm, retriever, contextualize_q_prompt
 )
@@ -70,6 +71,7 @@ history_aware_retriever = create_history_aware_retriever(
 # Answer question prompt
 # This system prompt helps the AI understand that it should provide concise answers
 # based on the retrieved context and indicates what to do if the answer is unknown
+# IMPORTANT: The {context} placeholder is automatically filled in by create_retrieval_chain() with the retrieved documents.
 qa_system_prompt = (
     "You are an assistant for question-answering tasks. Use "
     "the following pieces of retrieved context to answer the "
@@ -90,7 +92,7 @@ qa_prompt = ChatPromptTemplate.from_messages(
 )
 
 # Create a chain to combine documents for question answering
-# “Stuffing” = simply feeding all retrieved documents into the prompt context for answering.
+# “Stuffing” = When given a list of retrieved documents, concatenate their page_content fields into a string and pass it to the prompt variable {context}.
 # This function creates a chain that:
 # 1- Takes llm (the model you’re using to generate answers),
 # 2- Takes qa_prompt (the instructions for how to ask the LLM),
@@ -124,19 +126,39 @@ def continual_chat():
 if __name__ == "__main__":
     continual_chat()
 
+"""
+----------------------------------------------------------------------------
+Diagram of the RAG conversational flow:
 
-# ----------------------------------------------------------------------------
-# Diagram of the RAG conversational flow:
+User question
+   ↓
+LLM reformulates question (based on chat history)
+   ↓
+Retriever fetches top-k similar docs from Chroma
+   ↓
+LLM reads retrieved context + question
+   ↓
+Generates short, grounded answer
+   ↓
+Conversation history updated
+----------------------------------------------------------------------------
 
-# User question
-#    ↓
-# LLM reformulates question (based on chat history)
-#    ↓
-# Retriever fetches top-k similar docs from Chroma
-#    ↓
-# LLM reads retrieved context + question
-#    ↓
-# Generates short, grounded answer
-#    ↓
-# Conversation history updated
-# ----------------------------------------------------------------------------
+Visual summary of the key mapping
+==================================
+
+Stage: history_aware_retriever
+    Input keys: input, chat_history
+    Output keys: context (list of documents)
+    Description: Reformulates the question, retrieves relevant docs
+
+Stage: question_answer_chain
+    Input keys: input, chat_history, context
+    Output keys: answer
+    Description: Builds prompt using {context} = docs' text, {input} = user query
+
+Stage: rag_chain.invoke()
+    Input keys: input, chat_history
+    Output keys: answer
+    Description: Wraps both above stages end-to-end
+"""
+
