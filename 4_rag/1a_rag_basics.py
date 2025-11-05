@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 # Steps to set up a RAG system with Chroma vector store
 # 1. Define the directory containing the text file and the persistent directory
 # 2. Check if the Chroma vector store already exists
-# 3. If not, read the text content from the file
+# 3. If not, read/load the text content from the file
 # 4. Split the document into chunks
 # 5. Create embeddings
 # 6. Create the vector store and persist it automatically
